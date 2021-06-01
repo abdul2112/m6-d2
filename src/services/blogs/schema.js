@@ -1,5 +1,20 @@
 import mongoose from 'mongoose';
 
+// {
+//   "category": "new article",
+//   "title": "BLOG 10",
+//   "cover":"something else",
+//   "readTime": {
+//     "value": 1,
+//     "unit": "minute"
+//   },
+//   "author": {
+//     "name": "new author",
+//     "avatar":"something different"
+//   },
+//     "content": "HTML"
+// }
+
 const { Schema, model } = mongoose;
 
 const BlogSchema = new Schema(

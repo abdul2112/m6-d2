@@ -34,8 +34,49 @@ blogsRouter.get('/', async (req, res, next) => {
   }
 });
 
-blogsRouter.get('/:id', async (req, res, next) => {});
+blogsRouter.get('/:id', async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const blog = await BlogModel.findById(id);
+    if (blog) {
+      res.send(blog);
+    } else {
+      next(createError(404, `blog ${req.params.id} not found`));
+    }
+  } catch (error) {
+    console.log(error);
+    next(createError(500, 'An error occurred while getting blog'));
+  }
+});
 
-blogsRouter.put('/:id', async (req, res, next) => {});
+blogsRouter.put('/:id', async (req, res, next) => {
+  try {
+    const blog = await BlogModel.findByIdAndUpdate(req.params.id, req.body, {
+      runValidators: true,
+      new: true,
+    });
+    if (blog) {
+      res.send(blog);
+    } else {
+      next(createError(404, `blog ${req.params.id} not found`));
+    }
+  } catch (error) {
+    console.log(error);
+    next(createError(500, 'An error occurred while updating blog'));
+  }
+});
 
-blogsRouter.delete('/:id', async (req, res, next) => {});
+blogsRouter.delete('/:id', async (req, res, next) => {
+  try {
+    const blog = await BlogModel.findByIdAndDelete(req.params.id);
+    if (blog) {
+      res.send('Blog has been DELETED');
+      // res.status(204).send('Media has been DELETED');
+    } else {
+      next(createError(404, `blog ${req.params.id} not found`));
+    }
+  } catch (error) {
+    console.log(error);
+    next(createError(500, 'An error occurred while deleting blog'));
+  }
+});
