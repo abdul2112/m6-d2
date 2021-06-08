@@ -8,6 +8,7 @@ import {
   catchAllErrorHandler,
 } from './errorHandlers.js';
 import blogsRouter from './services/blogs/index.js';
+import authorsRouter from './services/authors/index.js';
 
 const server = express();
 
@@ -21,6 +22,7 @@ server.use(cors());
 // ******** ROUTES ************
 
 server.use('/blogs', blogsRouter);
+server.use('/authors', authorsRouter);
 
 // ******** ERROR MIDDLEWARES ************
 
@@ -34,11 +36,11 @@ mongoose
   .connect(process.env.MONGO_CONNECTION, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useFindAndModify: false,
   })
-  .then(
+  .then(() => {
+    console.log('Connected to MongoDB 🌵');
     server.listen(port, () => {
-      console.log(`Connected and running on port ${port} ✅`);
-    })
-  )
+      console.log('Server listening on port', port, '✅');
+    });
+  })
   .catch((err) => console.log(err));
